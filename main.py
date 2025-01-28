@@ -20,14 +20,14 @@ numbers= [[8192, 2048, 512, 16],
         [32, 8, 2, 2]]
 
 """
-# 2 dimensions list with data
+# 2 dimensions list with data, new game
 numbers= [["", "", "", ""],
         ["", "", "", ""],
         ["", 2, "", 2],
         ["", "", "", ""]]
         
 """
-
+# color code
 colors={
     "": "#EEEEEE",
     2: "#FF00CC",
@@ -68,10 +68,10 @@ Label(win, text="HIGH SCORE\n",font=("Arial", 20), bg='#2B78E4',fg="#FFFFFF",bor
 # Score
 Label(win, text="SCORE\n", width=10, font=("Arial", 20), bg='#EEEEEE',borderwidth=1,relief="solid").place(x=380, y=80)
 
-# Boutton "NEW"
+# "NEW" button
 Button(win, text="NEW", width=8, height=1, font=("Arial", 20)).place(x=220, y=10)
 
-#labels creation and position (1. Creation 2. position)
+# labels creation and position (1. Creation 2. position)
 for line in range(len(numbers)):
     for col in range(len(numbers[line])):
         # creation without placement
