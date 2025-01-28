@@ -5,6 +5,7 @@
 #2345678901234567890123456789012345678901234567890123456789012345678901234567890
 """
 Nom : main.py
+Auteur : David Galindo
 Date : 21.01.2025
 Version : 0.0.1
 Purpose : Afficher le tableau mémoire de la maquette personnalisée du jeu "2048".
