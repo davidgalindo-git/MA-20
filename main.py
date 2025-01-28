@@ -48,33 +48,33 @@ colors={
 labels=[[None,None,None,None],[None,None,None,None],[None,None,None,None],[None,None,None,None]]
 
 x0=25 # horizontal beginning of labels
-y0=100 # vertical beginning of labels
-width=150 # horizontal distance between labels
-height=150 # vertical distance between labels
+y0=190 # vertical beginning of labels
+width=130 # horizontal distance between labels
+height=130 # vertical distance between labels
 
 # Windows creation
 win = Tk()
-win.geometry("700x750")
+win.geometry("600x750")
 win.title('2048')
+win.configure(bg='#EE99FF')
 
 # Title
-label_title = Label(win, text="2048",width=25, height=3, font=("Arial", 28))
-label_title.grid(row=0, column=1, padx=10, pady=10)
+Label(win, text="2048", font=("Arial", 45),bg='#EE99FF',fg="#FFFFFF").place(x=220, y=80)
 
 # High Score
-label_high_score = Label(win, text="HIGH SCORE",width=10, height=2, font=("Arial", 20), borderwidth=1)
-label_high_score.grid(row=0, column=0, padx=10, pady=10)
+Label(win, text="HIGH SCORE\n",font=("Arial", 20), bg='#2B78E4',fg="#FFFFFF",borderwidth=1,relief="solid").place(x=25, y=80)
 
 # Score
-label_score = Label(win, text="SCORE",width=10, height=2, font=("Arial", 20), borderwidth=1)
-label_score.grid(row=0, column=2, padx=10, pady=10)
+Label(win, text="SCORE\n", width=10, font=("Arial", 20), bg='#EEEEEE',borderwidth=1,relief="solid").place(x=380, y=80)
 
+# Boutton "NEW"
+Button(win, text="NEW", width=8, height=1, font=("Arial", 20)).place(x=220, y=10)
 
 #labels creation and position (1. Creation 2. position)
 for line in range(len(numbers)):
     for col in range(len(numbers[line])):
         # creation without placement
-        labels[line][col] = Label (win,text =numbers[line][col], width=12, height=6, borderwidth=1, relief="solid", font=("Arial", 15), bg="#FFFF00", fg="#FFFFFF")
+        labels[line][col] = Label (win,text =numbers[line][col], width=6, height=3, borderwidth=1, relief="solid", font=("Arial", 28), bg="#FFFF00", fg="#FFFFFF")
         # label positionning in the windows
         labels[line][col].place(x=x0 + width * col, y=y0 + height * line)
 
