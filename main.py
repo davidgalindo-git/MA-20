@@ -84,18 +84,38 @@ def displayGame(colors, numbers):
         for col in range(len(numbers[line])):
             number = numbers[line][col]         # Obtenir le nombre actuel
             color = colors.get(number, None)    # Obtenir sa couleur
-            labels[line][col].config(bg=color)  # Modifier la couleur background
+            labels[line][col].config(bg=color,text =numbers[line][col])  # Modifier la couleur background
 
-"""
-def fusion():
-    numbers= [0, 0, 0, 2]
-    for n in range(len(numbers)):
-        if n != 0:
-            numbers[0]=numbers[n]
-        else:
-            n+1
-    print(numbers)
-"""
+
+def pack4(a,b,c,d):
+    nm=0
+    if c==0 and d!=0:
+        a,b,c,d=a,b,d,0
+        nm+=1
+    if b==0 and c!=0:
+        a,b,c,d=a,c,d,0
+        nm+=1
+    if a==0 and b!=0:
+        a,b,c,d=b,c,d,0
+        nm+=1
+    if a==b and a>0:
+        a = 2*a
+        b=c
+        c=d
+        d=0
+        nm+=1
+    if b==c and b>0:
+        b=2*b
+        c=d
+        d=0
+        nm+=1
+    if c==d and c>0:
+        c=2*c
+        d=0
+        nm+=1
+    return[a,b,c,d,nm]
+print(pack4(2,0,0,0))
+
 
 displayGame(colors, numbers)
 win.mainloop()
