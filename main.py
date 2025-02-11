@@ -111,7 +111,26 @@ def new_game():
     displayGame(colors, numbers)
 
 def add_number():
-    global numbers
+    non_zero_count_before = sum(1 for row in numbers for num in row if num != 0)  # Compter combien de nombres non nuls y a-t-il
+    non_zero_count_after = 0
+    for line in range(len(numbers)):
+        for col in range(len(numbers[line])):
+            if numbers[line][col] == 0 and (non_zero_count_after - non_zero_count_before) < 1:
+                numbers[line][col]=random.choices([0, 2, 4], weights=[0.8625,0.125,0.0125])[0] # Set random numbers between 0, 2 and 4
+                non_zero_count_after = sum(1 for row in numbers for num in row if num != 0)
+    if (non_zero_count_after - non_zero_count_before) < 1:
+        add_number()
+    displayGame(colors, numbers)
+    game_over()
+
+def game_over():
+    for line in range(len(numbers)):
+        for col in range(len(numbers[line])):
+            non_zero_count = sum(1 for row in numbers for num in row if num != 0)
+    if non_zero_count == 16:
+        game_over_message = messagebox.askquestion("Game Over", "Do you want to play again?")
+        if game_over_message:
+            new_game()
 
 def pack4(a,b,c,d):
     nm=0
@@ -146,6 +165,7 @@ def move_down(tot_move):
     for col in range(len(numbers)):
         [numbers[3][col],numbers[2][col],numbers[1][col],numbers[0][col],nmove]=pack4(numbers[3][col],numbers[2][col],numbers[1][col],numbers[0][col])
         tot_move+=nmove
+    add_number()
     displayGame(colors, numbers)
     add_score(tot_move,score)
 
@@ -153,6 +173,7 @@ def move_up(tot_move):
     for col in range(len(numbers)):
         [numbers[0][col],numbers[1][col],numbers[2][col],numbers[3][col],nmove]=pack4(numbers[0][col],numbers[1][col],numbers[2][col],numbers[3][col])
         tot_move+=nmove
+    add_number()
     displayGame(colors, numbers)
     add_score(tot_move, score)
 
@@ -160,6 +181,7 @@ def move_right(tot_move):
     for line in range(len(numbers)):
         [numbers[line][3],numbers[line][2],numbers[line][1],numbers[line][0],nmove]=pack4(numbers[line][3],numbers[line][2],numbers[line][1],numbers[line][0])
         tot_move+=nmove
+    add_number()
     displayGame(colors, numbers)
     add_score(tot_move, score)
 
@@ -167,6 +189,7 @@ def move_left(tot_move):
     for line in range(len(numbers)):
         [numbers[line][0],numbers[line][1],numbers[line][2],numbers[line][3],nmove]=pack4(numbers[line][0],numbers[line][1],numbers[line][2],numbers[line][3])
         tot_move+=nmove
+    add_number()
     displayGame(colors, numbers)
     add_score(tot_move, score)
 
