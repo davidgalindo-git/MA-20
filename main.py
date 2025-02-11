@@ -101,12 +101,6 @@ def add_score(tot_move,score):
     score_label.config(text=score)
 
 def new_game():
-    global numbers
-    numbers = [[0, 0, 0, 0],
-               [0, 0, 0, 0],
-               [0, 0, 0, 0],
-               [0, 0, 0, 0]]
-
     for line in range(len(numbers)):
         for col in range(len(numbers[line])):
             numbers[line][col]=random.choices([0, 2, 4], weights=[0.8625,0.125,0.0125])[0] # Set random numbers between 0, 2 and 4
@@ -115,6 +109,9 @@ def new_game():
     if non_zero_count < 2 or non_zero_count > 3: # Minimum 2 nombres, maximum 3 nombres
         new_game()
     displayGame(colors, numbers)
+
+def add_number():
+    global numbers
 
 def pack4(a,b,c,d):
     nm=0
