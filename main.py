@@ -10,9 +10,11 @@ Date : 21.01.2025
 Version : 0.0.1
 Purpose : Afficher le tableau mémoire de la maquette personnalisée du jeu "2048".
 """
+from operator import length_hint
 from tkinter import *
 import tkinter.font
 from tkinter import messagebox
+import random
 
 # 2 dimensions list with data
 
@@ -23,10 +25,10 @@ numbers= [[8192, 2048, 512, 16],
         [32, 8, 2, 2]]
 """
 # 2 dimensions list with data, new game
-numbers= [[0, 2, 0, 2],
-        [2, 2, 4, 4],
-        [0, 2, 0, 2],
-        [2, 0, 2, 0]]
+numbers= [[0, 0, 0, 0],
+        [0, 0, 0, 0],
+        [0, 0, 0, 0],
+        [0, 0, 0, 0]]
         
 
 # color code
@@ -100,10 +102,18 @@ def add_score(tot_move,score):
 
 def new_game():
     global numbers
-    numbers = [[0, 2, 0, 2],
-               [2, 2, 4, 4],
-               [0, 2, 0, 2],
-               [2, 0, 2, 0]]
+    numbers = [[0, 0, 0, 0],
+               [0, 0, 0, 0],
+               [0, 0, 0, 0],
+               [0, 0, 0, 0]]
+
+    for line in range(len(numbers)):
+        for col in range(len(numbers[line])):
+            numbers[line][col]=random.choices([0, 2, 4], weights=[0.8625,0.125,0.0125])[0] # Set random numbers between 0, 2 and 4
+
+    non_zero_count = sum(1 for row in numbers for num in row if num!=0) # Compter combien de nombres non nuls y a-t-il
+    if non_zero_count < 2 or non_zero_count > 3: # Minimum 2 nombres, maximum 3 nombres
+        new_game()
     displayGame(colors, numbers)
 
 def pack4(a,b,c,d):
@@ -183,7 +193,7 @@ def key_pressed(event) :
 new_game_button = Button(win, text="NEW", width=8, height=1, font=("Arial", 20), command=new_game)
 new_game_button = new_game_button.place(x=220, y=10)
 
-
+new_game()
 add_score(tot_move,score)
 win.bind('<Key>', key_pressed) # keyboard event treatment
 displayGame(colors, numbers)
