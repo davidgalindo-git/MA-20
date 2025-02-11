@@ -15,19 +15,20 @@ import tkinter.font
 from tkinter import messagebox
 
 # 2 dimensions list with data
-numbers= [[8192, 2048, 512, 16],
-        [4096, 1024, 64, 4],
-        [256, 128, 4, ""],
-        [32, 8, 2, 2]]
 
 """
-# 2 dimensions list with data, new game
-numbers= [["", "", "", ""],
-        ["", "", "", ""],
-        ["", 2, "", 2],
-        ["", "", "", ""]]
-        
+numbers= [[8192, 2048, 512, 16],
+        [4096, 1024, 64, 4],
+        [256, 128, 4, 0],
+        [32, 8, 2, 2]]
 """
+# 2 dimensions list with data, new game
+numbers= [[0, 2, 0, 2],
+        [2, 2, 4, 4],
+        [0, 2, 0, 2],
+        [2, 0, 2, 0]]
+        
+
 # color code
 colors={
     "": "#EEEEEE",
@@ -83,9 +84,10 @@ for line in range(len(numbers)):
 def displayGame(colors, numbers):
     for line in range(len(numbers)):
         for col in range(len(numbers[line])):
-            number = numbers[line][col]         # Get current number
+            number = numbers[line][col] # Get current number
+            display_number = "" if number == 0 else number # Turn 0 into empty string
             color = colors.get(number, None)    # Get number color
-            labels[line][col].config(bg=color,text =numbers[line][col])  # Modifier la couleur background et remettre les nombres
+            labels[line][col].config(bg=color,text =display_number)  # Modifier la couleur background et remettre les nombres
 
 def pack4(a,b,c,d):
     nm=0
@@ -121,24 +123,28 @@ def move_down():
     for col in range(0,3):
         [numbers[3][col],numbers[2][col],numbers[1][col],numbers[0][col],nmove]=pack4(numbers[3][col],numbers[2][col],numbers[1][col],numbers[0][col])
         tot_move+=nmove
+    displayGame(colors, numbers)
 
 def move_up():
     tot_move=0
     for col in range(0,3):
         [numbers[0][col],numbers[1][col],numbers[2][col],numbers[3][col],nmove]=pack4(numbers[0][col],numbers[1][col],numbers[2][col],numbers[3][col])
         tot_move+=nmove
+    displayGame(colors, numbers)
 
 def move_right():
     tot_move=0
     for line in range(0,3):
         [numbers[line][3],numbers[line][2],numbers[line][1],numbers[line][0],nmove]=pack4(numbers[line][3],numbers[line][2],numbers[line][1],numbers[line][0])
         tot_move+=nmove
+    displayGame(colors, numbers)
 
 def move_left():
     tot_move=0
     for line in range(0,3):
         [numbers[line][0],numbers[line][1],numbers[line][2],numbers[line][3],nmove]=pack4(numbers[line][0],numbers[line][1],numbers[line][2],numbers[line][3])
         tot_move+=nmove
+    displayGame(colors, numbers)
 
 # Player event: key pressed
 def key_pressed(event) :
