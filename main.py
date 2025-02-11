@@ -12,6 +12,7 @@ Purpose : Afficher le tableau mémoire de la maquette personnalisée du jeu "204
 """
 from tkinter import *
 import tkinter.font
+from tkinter import messagebox
 
 # 2 dimensions list with data
 numbers= [[8192, 2048, 512, 16],
@@ -82,10 +83,9 @@ for line in range(len(numbers)):
 def displayGame(colors, numbers):
     for line in range(len(numbers)):
         for col in range(len(numbers[line])):
-            number = numbers[line][col]         # Obtenir le nombre actuel
-            color = colors.get(number, None)    # Obtenir sa couleur
+            number = numbers[line][col]         # Get current number
+            color = colors.get(number, None)    # Get number color
             labels[line][col].config(bg=color,text =numbers[line][col])  # Modifier la couleur background et remettre les nombres
-
 
 def pack4(a,b,c,d):
     nm=0
@@ -115,6 +115,7 @@ def pack4(a,b,c,d):
         nm+=1
     return[a,b,c,d,nm]
 
+# Player movement: data control
 def move_down():
     tot_move=0
     for col in range(0,3):
@@ -139,7 +140,23 @@ def move_left():
         [numbers[line][0],numbers[line][1],numbers[line][2],numbers[line][3],nmove]=pack4(numbers[line][0],numbers[line][1],numbers[line][2],numbers[line][3])
         tot_move+=nmove
 
+# Player event: key pressed
+def key_pressed(event) :
+    key=event.keysym # Get key symbole
+    if (key=="Right" or key=="d" or key=="D"):
+        move_right()
+    if (key=="Left" or key=="a" or key=="A"):
+        move_left()
+    if (key=="Up" or key=="w" or key=="W"):
+        move_up()
+    if (key=="Down" or key=="s" or key=="S"):
+        move_down()
+    if (key=="Q" or key=="q"):
+        result=messagebox.askokcancel("Confirmation", "vraiment quitter ?")
+        if result:
+            quit()
 
 
+win.bind('<Key>', key_pressed) # keyboard event treatment
 displayGame(colors, numbers)
 win.mainloop()
