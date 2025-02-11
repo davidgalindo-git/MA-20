@@ -23,7 +23,6 @@ numbers= [[8192, 2048, 512, 16],
         [32, 8, 2, 2]]
 """
 # 2 dimensions list with data, new game
-global numbers
 numbers= [[0, 2, 0, 2],
         [2, 2, 4, 4],
         [0, 2, 0, 2],
@@ -105,6 +104,7 @@ def new_game():
                [2, 2, 4, 4],
                [0, 2, 0, 2],
                [2, 0, 2, 0]]
+    displayGame(colors, numbers)
 
 def pack4(a,b,c,d):
     nm=0
@@ -180,7 +180,8 @@ def key_pressed(event) :
             quit()
 
 # "NEW" button
-Button(win, text="NEW", width=8, height=1, font=("Arial", 20), command=new_game).place(x=220, y=10)
+new_game_button = Button(win, text="NEW", width=8, height=1, font=("Arial", 20), command=new_game)
+new_game_button = new_game_button.place(x=220, y=10)
 
 
 add_score(tot_move,score)
