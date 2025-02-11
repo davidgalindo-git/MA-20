@@ -84,7 +84,7 @@ def displayGame(colors, numbers):
         for col in range(len(numbers[line])):
             number = numbers[line][col]         # Obtenir le nombre actuel
             color = colors.get(number, None)    # Obtenir sa couleur
-            labels[line][col].config(bg=color,text =numbers[line][col])  # Modifier la couleur background
+            labels[line][col].config(bg=color,text =numbers[line][col])  # Modifier la couleur background et remettre les nombres
 
 
 def pack4(a,b,c,d):
@@ -114,7 +114,31 @@ def pack4(a,b,c,d):
         d=0
         nm+=1
     return[a,b,c,d,nm]
-print(pack4(2,0,0,0))
+
+def move_down():
+    tot_move=0
+    for col in range(0,3):
+        [numbers[3][col],numbers[2][col],numbers[1][col],numbers[0][col],nmove]=pack4(numbers[3][col],numbers[2][col],numbers[1][col],numbers[0][col])
+        tot_move+=nmove
+
+def move_up():
+    tot_move=0
+    for col in range(0,3):
+        [numbers[0][col],numbers[1][col],numbers[2][col],numbers[3][col],nmove]=pack4(numbers[0][col],numbers[1][col],numbers[2][col],numbers[3][col])
+        tot_move+=nmove
+
+def move_right():
+    tot_move=0
+    for line in range(0,3):
+        [numbers[line][3],numbers[line][2],numbers[line][1],numbers[line][0],nmove]=pack4(numbers[line][3],numbers[line][2],numbers[line][1],numbers[line][0])
+        tot_move+=nmove
+
+def move_left():
+    tot_move=0
+    for line in range(0,3):
+        [numbers[line][0],numbers[line][1],numbers[line][2],numbers[line][3],nmove]=pack4(numbers[line][0],numbers[line][1],numbers[line][2],numbers[line][3])
+        tot_move+=nmove
+
 
 
 displayGame(colors, numbers)
