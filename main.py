@@ -121,12 +121,16 @@ def add_number():
     if (non_zero_count_after - non_zero_count_before) < 1:
         add_number()
     displayGame(colors, numbers)
-    game_over()
 
 def game_over():
-    for line in range(len(numbers)):
+    non_zero_count=0
+    for line in range(len(numbers)):            # Count numbers if they're different from each other
         for col in range(len(numbers[line])):
-            non_zero_count = sum(1 for row in numbers for num in row if num != 0)
+            if numbers[line][col]!= numbers[line+1][col]\
+            or numbers[line][col]!= numbers[line][col+1]\
+            or numbers[line][col]!= numbers[line-1][col]\
+            or numbers[line][col]!= numbers[line][col-1]:
+                non_zero_count +=1
     if non_zero_count == 16:
         game_over_message = messagebox.askquestion("Game Over", "Do you want to play again?")
         if game_over_message:
@@ -168,6 +172,7 @@ def move_down(tot_move):
     add_number()
     displayGame(colors, numbers)
     add_score(tot_move,score)
+    game_over()
 
 def move_up(tot_move):
     for col in range(len(numbers)):
@@ -176,6 +181,7 @@ def move_up(tot_move):
     add_number()
     displayGame(colors, numbers)
     add_score(tot_move, score)
+    game_over()
 
 def move_right(tot_move):
     for line in range(len(numbers)):
@@ -184,6 +190,7 @@ def move_right(tot_move):
     add_number()
     displayGame(colors, numbers)
     add_score(tot_move, score)
+    game_over()
 
 def move_left(tot_move):
     for line in range(len(numbers)):
@@ -192,6 +199,7 @@ def move_left(tot_move):
     add_number()
     displayGame(colors, numbers)
     add_score(tot_move, score)
+    game_over()
 
 # Player event: key pressed
 def key_pressed(event) :
