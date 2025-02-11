@@ -31,7 +31,7 @@ numbers= [[0, 2, 0, 2],
 
 # color code
 colors={
-    "": "#EEEEEE",
+    0: "#EEEEEE",
     2: "#FF00CC",
     4: "#E600D9",
     8: "#CC00E6",
@@ -49,6 +49,12 @@ colors={
 
 # 2 dimensions list (empty, with labels in the future)
 labels=[[None,None,None,None],[None,None,None,None],[None,None,None,None],[None,None,None,None]]
+
+# Score
+score = 0
+
+# Total movements per event
+tot_move = 0
 
 x0=25 # horizontal beginning of labels
 y0=190 # vertical beginning of labels
@@ -68,7 +74,8 @@ Label(win, text="2048", font=("Arial", 45),bg='#EE99FF',fg="#FFFFFF").place(x=22
 Label(win, text="HIGH SCORE\n",font=("Arial", 20), bg='#2B78E4',fg="#FFFFFF",borderwidth=1,relief="solid").place(x=25, y=80)
 
 # Score
-Label(win, text="SCORE\n", width=10, font=("Arial", 20), bg='#EEEEEE',borderwidth=1,relief="solid").place(x=380, y=80)
+score_label = Label(win, text=f'SCORE\n{score}', width=10, font=("Arial", 20), bg='#EEEEEE',borderwidth=1,relief="solid")
+score_label.place(x=380, y=80)
 
 # "NEW" button
 Button(win, text="NEW", width=8, height=1, font=("Arial", 20)).place(x=220, y=10)
@@ -88,6 +95,10 @@ def displayGame(colors, numbers):
             display_number = "" if number == 0 else number # Turn 0 into empty string
             color = colors.get(number, None)    # Get number color
             labels[line][col].config(bg=color,text =display_number)  # Modifier la couleur background et remettre les nombres
+
+def add_score(tot_move,score):
+    score+=tot_move
+    score_label.config(text=score)
 
 def pack4(a,b,c,d):
     nm=0
@@ -118,51 +129,52 @@ def pack4(a,b,c,d):
     return[a,b,c,d,nm]
 
 # Player movement: data control
-def move_down():
-    tot_move=0
-    for col in range(0,3):
+def move_down(tot_move):
+    for col in range(len(numbers)):
         [numbers[3][col],numbers[2][col],numbers[1][col],numbers[0][col],nmove]=pack4(numbers[3][col],numbers[2][col],numbers[1][col],numbers[0][col])
         tot_move+=nmove
     displayGame(colors, numbers)
+    add_score(tot_move,score)
 
-def move_up():
-    tot_move=0
-    for col in range(0,3):
+def move_up(tot_move):
+    for col in range(len(numbers)):
         [numbers[0][col],numbers[1][col],numbers[2][col],numbers[3][col],nmove]=pack4(numbers[0][col],numbers[1][col],numbers[2][col],numbers[3][col])
         tot_move+=nmove
     displayGame(colors, numbers)
+    add_score(tot_move, score)
 
-def move_right():
-    tot_move=0
-    for line in range(0,3):
+def move_right(tot_move):
+    for line in range(len(numbers)):
         [numbers[line][3],numbers[line][2],numbers[line][1],numbers[line][0],nmove]=pack4(numbers[line][3],numbers[line][2],numbers[line][1],numbers[line][0])
         tot_move+=nmove
     displayGame(colors, numbers)
+    add_score(tot_move, score)
 
-def move_left():
-    tot_move=0
-    for line in range(0,3):
+def move_left(tot_move):
+    for line in range(len(numbers)):
         [numbers[line][0],numbers[line][1],numbers[line][2],numbers[line][3],nmove]=pack4(numbers[line][0],numbers[line][1],numbers[line][2],numbers[line][3])
         tot_move+=nmove
     displayGame(colors, numbers)
+    add_score(tot_move, score)
 
 # Player event: key pressed
 def key_pressed(event) :
     key=event.keysym # Get key symbole
     if (key=="Right" or key=="d" or key=="D"):
-        move_right()
+        move_right(tot_move)
     if (key=="Left" or key=="a" or key=="A"):
-        move_left()
+        move_left(tot_move)
     if (key=="Up" or key=="w" or key=="W"):
-        move_up()
+        move_up(tot_move)
     if (key=="Down" or key=="s" or key=="S"):
-        move_down()
+        move_down(tot_move)
     if (key=="Q" or key=="q"):
         result=messagebox.askokcancel("Confirmation", "vraiment quitter ?")
         if result:
             quit()
 
 
+add_score(tot_move,score)
 win.bind('<Key>', key_pressed) # keyboard event treatment
 displayGame(colors, numbers)
 win.mainloop()
