@@ -10,25 +10,20 @@ Date : 21.01.2025
 Version : 0.0.1
 Purpose : Afficher le tableau mémoire de la maquette personnalisée du jeu "2048".
 """
+from operator import length_hint
 from tkinter import *
 import tkinter.font
 from tkinter import messagebox
+import random
 
-# 2 dimensions list with data
-
-"""
-numbers= [[8192, 2048, 512, 16],
-        [4096, 1024, 64, 4],
-        [256, 128, 4, 0],
-        [32, 8, 2, 2]]
-"""
 # 2 dimensions list with data, new game
-global numbers
-numbers= [[0, 2, 0, 2],
-        [2, 2, 4, 4],
-        [0, 2, 0, 2],
-        [2, 0, 2, 0]]
-        
+numbers= [[0, 0, 0, 0],
+        [0, 0, 0, 0],
+        [0, 0, 0, 0],
+        [0, 0, 0, 0]]
+
+# empty cases list
+empty_positions = []
 
 # color code
 colors={
@@ -54,9 +49,6 @@ labels=[[None,None,None,None],[None,None,None,None],[None,None,None,None],[None,
 # Score
 score = 0
 
-# Total movements per event
-tot_move = 0
-
 x0=25 # horizontal beginning of labels
 y0=190 # vertical beginning of labels
 width=130 # horizontal distance between labels
@@ -79,7 +71,7 @@ score_label = Label(win, text=f'SCORE\n{score}', width=10, font=("Arial", 20), b
 score_label.place(x=380, y=80)
 
 
-# labels creation and position (1. Creation 2. position)
+# labels creation and position
 for line in range(len(numbers)):
     for col in range(len(numbers[line])):
         # creation without placement
@@ -87,6 +79,7 @@ for line in range(len(numbers)):
         # label positionning in the windows
         labels[line][col].place(x=x0 + width * col, y=y0 + height * line)
 
+# refresh game display
 def displayGame(colors, numbers):
     for line in range(len(numbers)):
         for col in range(len(numbers[line])):
@@ -95,17 +88,63 @@ def displayGame(colors, numbers):
             color = colors.get(number, None)    # Get number color
             labels[line][col].config(bg=color,text =display_number)  # Modifier la couleur background et remettre les nombres
 
+
+# add current score earned to total score
 def add_score(tot_move,score):
     score+=tot_move
     score_label.config(text=score)
+    pass
 
+# restart game to an initial situation
 def new_game():
-    global numbers
-    numbers = [[0, 2, 0, 2],
-               [2, 2, 4, 4],
-               [0, 2, 0, 2],
-               [2, 0, 2, 0]]
+    for line in range(len(numbers)):
+        for col in range(len(numbers[line])):
+            numbers[line][col]=random.choices([0, 2, 4], weights=[0.8625,0.125,0.0125])[0] # Set random numbers between 0, 2 and 4
 
+    non_zero_count = sum(1 for row in numbers for num in row if num!=0) # Compter combien de nombres non nuls y a-t-il
+    if non_zero_count < 2 or non_zero_count > 3: # Minimum 2 nombres, maximum 3 nombres
+        new_game()
+    displayGame(colors, numbers)
+    pass
+
+# create list with empty cases' positions.
+def empty_cases():
+    # list of empty positions
+    global empty_positions
+    empty_positions = []
+    for line in range(len(numbers)):
+        for col in range(len(numbers[line])):
+            if numbers[line][col] == 0:
+                empty_positions.append([line,col])
+    return empty_positions
+
+# add 2 or 4 randomly into one empty case
+def add_number():
+    empty_positions = empty_cases()
+    if empty_positions:
+        line, col = random.choice(empty_positions)
+        numbers[line][col] = random.choices([2, 4], weights=[0.8,0.2])[0]
+        displayGame(colors, numbers)
+    else:
+        return
+
+# finish game when loss conditions are met
+def game_over():
+    non_zero_count=0
+    for line in range(len(numbers)):            # Count numbers if they're different from each other
+        for col in range(len(numbers[line])):
+            if numbers[line][col]!= numbers[line+1][col]\
+            or numbers[line][col]!= numbers[line][col+1]\
+            or numbers[line][col]!= numbers[line-1][col]\
+            or numbers[line][col]!= numbers[line][col-1]:
+                non_zero_count +=1
+    if non_zero_count == 16:
+        game_over_message = messagebox.askquestion("Game Over", "Do you want to play again?")
+        if game_over_message:
+            new_game()
+    pass
+
+# merges 4 cases and counts the number of movements done
 def pack4(a,b,c,d):
     nm=0
     if c==0 and d!=0:
@@ -134,56 +173,89 @@ def pack4(a,b,c,d):
         nm+=1
     return[a,b,c,d,nm]
 
-# Player movement: data control
-def move_down(tot_move):
+# Player movement: merge down
+def move_down():
+    # total moves after merge
+    tot_move=0
     for col in range(len(numbers)):
+        # arrange numbers to match pack4's order [a,b,c,d,nm] and direction (merge left)
         [numbers[3][col],numbers[2][col],numbers[1][col],numbers[0][col],nmove]=pack4(numbers[3][col],numbers[2][col],numbers[1][col],numbers[0][col])
         tot_move+=nmove
+    # add random number if there are 1 or more moves after event
+    if tot_move>0:
+        add_number()
     displayGame(colors, numbers)
     add_score(tot_move,score)
+    game_over()
 
-def move_up(tot_move):
+# Player movement: merge up
+def move_up():
+    # total moves after merge
+    tot_move = 0
     for col in range(len(numbers)):
+        # arrange numbers to match pack4's order [a,b,c,d,nm] and direction (merge left)
         [numbers[0][col],numbers[1][col],numbers[2][col],numbers[3][col],nmove]=pack4(numbers[0][col],numbers[1][col],numbers[2][col],numbers[3][col])
         tot_move+=nmove
+    # add random number if there are 1 or more moves after event
+    if tot_move > 0:
+        add_number()
     displayGame(colors, numbers)
     add_score(tot_move, score)
+    game_over()
 
-def move_right(tot_move):
+# Player movement: merge right
+def move_right():
+    # total moves after merge
+    tot_move = 0
     for line in range(len(numbers)):
+        # arrange numbers to match pack4's order [a,b,c,d,nm] and direction (merge left)
         [numbers[line][3],numbers[line][2],numbers[line][1],numbers[line][0],nmove]=pack4(numbers[line][3],numbers[line][2],numbers[line][1],numbers[line][0])
         tot_move+=nmove
+    # add random number if there are 1 or more moves after event
+    if tot_move > 0:
+        add_number()
     displayGame(colors, numbers)
     add_score(tot_move, score)
+    game_over()
 
-def move_left(tot_move):
+# Player movement: merge left
+def move_left():
+    # total moves after merge
+    tot_move = 0
     for line in range(len(numbers)):
+        # arrange numbers to match pack4's order [a,b,c,d,nm] and direction (merge left)
         [numbers[line][0],numbers[line][1],numbers[line][2],numbers[line][3],nmove]=pack4(numbers[line][0],numbers[line][1],numbers[line][2],numbers[line][3])
         tot_move+=nmove
+    # add random number if there are 1 or more moves after event
+    if tot_move > 0:
+        add_number()
     displayGame(colors, numbers)
     add_score(tot_move, score)
+    game_over()
 
 # Player event: key pressed
 def key_pressed(event) :
     key=event.keysym # Get key symbole
     if (key=="Right" or key=="d" or key=="D"):
-        move_right(tot_move)
+        move_right()
     if (key=="Left" or key=="a" or key=="A"):
-        move_left(tot_move)
+        move_left()
     if (key=="Up" or key=="w" or key=="W"):
-        move_up(tot_move)
+        move_up()
     if (key=="Down" or key=="s" or key=="S"):
-        move_down(tot_move)
+        move_down()
     if (key=="Q" or key=="q"):
         result=messagebox.askokcancel("Confirmation", "vraiment quitter ?")
         if result:
             quit()
 
 # "NEW" button
-Button(win, text="NEW", width=8, height=1, font=("Arial", 20), command=new_game).place(x=220, y=10)
+new_game_button = Button(win, text="NEW", width=8, height=1, font=("Arial", 20), command=new_game)
+new_game_button = new_game_button.place(x=220, y=10)
 
+new_game()
+#add_score(score)
 
-add_score(tot_move,score)
 win.bind('<Key>', key_pressed) # keyboard event treatment
 displayGame(colors, numbers)
 win.mainloop()
