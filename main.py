@@ -254,7 +254,7 @@ new_game_button = Button(win, text="NEW", width=8, height=1, font=("Arial", 20),
 new_game_button = new_game_button.place(x=220, y=10)
 
 new_game()
-add_score(tot_move,score)
+#add_score(score)
 
 win.bind('<Key>', key_pressed) # keyboard event treatment
 displayGame(colors, numbers)
