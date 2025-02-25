@@ -88,11 +88,13 @@ def displayGame(colors, numbers):
             color = colors.get(number, None)    # Get number color
             labels[line][col].config(bg=color,text =display_number)  # Modifier la couleur background et remettre les nombres
 
+"""
 # add current score earned to total score
 def add_score(tot_move,score):
     score+=tot_move
     score_label.config(text=score)
-
+"""
+"""
 # restart game to an initial situation
 def new_game():
     for line in range(len(numbers)):
@@ -103,9 +105,21 @@ def new_game():
     if non_zero_count < 2 or non_zero_count > 3: # Minimum 2 nombres, maximum 3 nombres
         new_game()
     displayGame(colors, numbers)
+"""
+# create list with empty cases' positions.
+def empty_cases():
+    # list of empty positions
+    empty_positions = []
+    for line in range(len(numbers)):
+        for col in range(len(numbers[line])):
+            if numbers[line][col] == 0:
+                empty_positions.append([line,col])
+    return empty_positions
 
 # add 2 or 4 randomly into one empty case
 def add_number():
+
+    """
     non_zero_count_before = sum(1 for row in numbers for num in row if num != 0)  # Compter combien de nombres non nuls y a-t-il
     non_zero_count_after = 0
     for line in range(len(numbers)):
@@ -116,7 +130,7 @@ def add_number():
     if (non_zero_count_after - non_zero_count_before) < 1:
         add_number()
     displayGame(colors, numbers)
-
+    """
 # finish game when loss conditions are met
 def game_over():
     non_zero_count=0
@@ -131,6 +145,7 @@ def game_over():
         game_over_message = messagebox.askquestion("Game Over", "Do you want to play again?")
         if game_over_message:
             new_game()
+"""
 
 # merges 4 cases and counts the number of movements done
 def pack4(a,b,c,d):
