@@ -49,9 +49,6 @@ labels=[[None,None,None,None],[None,None,None,None],[None,None,None,None],[None,
 # Score
 score = 0
 
-# Total movements per event
-tot_move = 0
-
 x0=25 # horizontal beginning of labels
 y0=190 # vertical beginning of labels
 width=130 # horizontal distance between labels
@@ -177,12 +174,16 @@ def pack4(a,b,c,d):
     return[a,b,c,d,nm]
 
 # Player movement: merge down
-def move_down(tot_move):
+def move_down():
+    # total moves after merge
+    tot_move=0
     for col in range(len(numbers)):
         # arrange numbers to match pack4's order [a,b,c,d,nm] and direction (merge left)
         [numbers[3][col],numbers[2][col],numbers[1][col],numbers[0][col],nmove]=pack4(numbers[3][col],numbers[2][col],numbers[1][col],numbers[0][col])
         tot_move+=nmove
-    add_number()
+    # add random number if there are 1 or more moves after event
+    if tot_move>0:
+        add_number()
     displayGame(colors, numbers)
     add_score(tot_move,score)
     game_over()
