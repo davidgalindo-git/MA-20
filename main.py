@@ -86,7 +86,7 @@ def displayGame(colors, numbers):
             number = numbers[line][col] # Get current number
             display_number = "" if number == 0 else number # Turn 0 into empty string
             color = colors.get(number, None)    # Get number color
-            labels[line][col].config(bg=color,text =display_number)  # Modifier la couleur background et remettre les nombres
+            labels[line][col].config(bg=color,text =display_number)  # Modify background color and refresh numbers list
 
 
 # add current score earned to total score
@@ -101,8 +101,8 @@ def new_game():
         for col in range(len(numbers[line])):
             numbers[line][col]=random.choices([0, 2, 4], weights=[0.8625,0.125,0.0125])[0] # Set random numbers between 0, 2 and 4
 
-    non_zero_count = sum(1 for row in numbers for num in row if num!=0) # Compter combien de nombres non nuls y a-t-il
-    if non_zero_count < 2 or non_zero_count > 3: # Minimum 2 nombres, maximum 3 nombres
+    non_zero_count = sum(1 for row in numbers for num in row if num!=0) # Count non empty cases
+    if non_zero_count < 2 or non_zero_count > 3: # Minimum 2 numbers, maximum 3 numbers
         new_game()
     displayGame(colors, numbers)
     pass
