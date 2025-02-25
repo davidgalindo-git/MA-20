@@ -189,34 +189,46 @@ def move_down():
     game_over()
 
 # Player movement: merge up
-def move_up(tot_move):
+def move_up():
+    # total moves after merge
+    tot_move = 0
     for col in range(len(numbers)):
         # arrange numbers to match pack4's order [a,b,c,d,nm] and direction (merge left)
         [numbers[0][col],numbers[1][col],numbers[2][col],numbers[3][col],nmove]=pack4(numbers[0][col],numbers[1][col],numbers[2][col],numbers[3][col])
         tot_move+=nmove
-    add_number()
+    # add random number if there are 1 or more moves after event
+    if tot_move > 0:
+        add_number()
     displayGame(colors, numbers)
     add_score(tot_move, score)
     game_over()
 
 # Player movement: merge right
-def move_right(tot_move):
+def move_right():
+    # total moves after merge
+    tot_move = 0
     for line in range(len(numbers)):
         # arrange numbers to match pack4's order [a,b,c,d,nm] and direction (merge left)
         [numbers[line][3],numbers[line][2],numbers[line][1],numbers[line][0],nmove]=pack4(numbers[line][3],numbers[line][2],numbers[line][1],numbers[line][0])
         tot_move+=nmove
-    add_number()
+    # add random number if there are 1 or more moves after event
+    if tot_move > 0:
+        add_number()
     displayGame(colors, numbers)
     add_score(tot_move, score)
     game_over()
 
 # Player movement: merge left
-def move_left(tot_move):
+def move_left():
+    # total moves after merge
+    tot_move = 0
     for line in range(len(numbers)):
         # arrange numbers to match pack4's order [a,b,c,d,nm] and direction (merge left)
         [numbers[line][0],numbers[line][1],numbers[line][2],numbers[line][3],nmove]=pack4(numbers[line][0],numbers[line][1],numbers[line][2],numbers[line][3])
         tot_move+=nmove
-    add_number()
+    # add random number if there are 1 or more moves after event
+    if tot_move > 0:
+        add_number()
     displayGame(colors, numbers)
     add_score(tot_move, score)
     game_over()
@@ -225,13 +237,13 @@ def move_left(tot_move):
 def key_pressed(event) :
     key=event.keysym # Get key symbole
     if (key=="Right" or key=="d" or key=="D"):
-        move_right(tot_move)
+        move_right()
     if (key=="Left" or key=="a" or key=="A"):
-        move_left(tot_move)
+        move_left()
     if (key=="Up" or key=="w" or key=="W"):
-        move_up(tot_move)
+        move_up()
     if (key=="Down" or key=="s" or key=="S"):
-        move_down(tot_move)
+        move_down()
     if (key=="Q" or key=="q"):
         result=messagebox.askokcancel("Confirmation", "vraiment quitter ?")
         if result:
