@@ -16,20 +16,11 @@ import tkinter.font
 from tkinter import messagebox
 import random
 
-# 2 dimensions list with data
-
-"""
-numbers= [[8192, 2048, 512, 16],
-        [4096, 1024, 64, 4],
-        [256, 128, 4, 0],
-        [32, 8, 2, 2]]
-"""
 # 2 dimensions list with data, new game
 numbers= [[0, 0, 0, 0],
         [0, 0, 0, 0],
         [0, 0, 0, 0],
         [0, 0, 0, 0]]
-        
 
 # color code
 colors={
@@ -80,7 +71,7 @@ score_label = Label(win, text=f'SCORE\n{score}', width=10, font=("Arial", 20), b
 score_label.place(x=380, y=80)
 
 
-# labels creation and position (1. Creation 2. position)
+# labels creation and position
 for line in range(len(numbers)):
     for col in range(len(numbers[line])):
         # creation without placement
@@ -88,6 +79,7 @@ for line in range(len(numbers)):
         # label positionning in the windows
         labels[line][col].place(x=x0 + width * col, y=y0 + height * line)
 
+# refresh game display
 def displayGame(colors, numbers):
     for line in range(len(numbers)):
         for col in range(len(numbers[line])):
@@ -96,10 +88,12 @@ def displayGame(colors, numbers):
             color = colors.get(number, None)    # Get number color
             labels[line][col].config(bg=color,text =display_number)  # Modifier la couleur background et remettre les nombres
 
+# add current score earned to total score
 def add_score(tot_move,score):
     score+=tot_move
     score_label.config(text=score)
 
+# restart game to an initial situation
 def new_game():
     for line in range(len(numbers)):
         for col in range(len(numbers[line])):
@@ -110,6 +104,7 @@ def new_game():
         new_game()
     displayGame(colors, numbers)
 
+# add 2 or 4 randomly into one empty case
 def add_number():
     non_zero_count_before = sum(1 for row in numbers for num in row if num != 0)  # Compter combien de nombres non nuls y a-t-il
     non_zero_count_after = 0
@@ -122,6 +117,7 @@ def add_number():
         add_number()
     displayGame(colors, numbers)
 
+# finish game when loss conditions are met
 def game_over():
     non_zero_count=0
     for line in range(len(numbers)):            # Count numbers if they're different from each other
@@ -136,6 +132,7 @@ def game_over():
         if game_over_message:
             new_game()
 
+# merges 4 cases and counts the number of movements done
 def pack4(a,b,c,d):
     nm=0
     if c==0 and d!=0:
@@ -164,9 +161,10 @@ def pack4(a,b,c,d):
         nm+=1
     return[a,b,c,d,nm]
 
-# Player movement: data control
+# Player movement: merge down
 def move_down(tot_move):
     for col in range(len(numbers)):
+        # arrange numbers to match pack4's order [a,b,c,d,nm] and direction (merge left)
         [numbers[3][col],numbers[2][col],numbers[1][col],numbers[0][col],nmove]=pack4(numbers[3][col],numbers[2][col],numbers[1][col],numbers[0][col])
         tot_move+=nmove
     add_number()
@@ -174,8 +172,10 @@ def move_down(tot_move):
     add_score(tot_move,score)
     game_over()
 
+# Player movement: merge up
 def move_up(tot_move):
     for col in range(len(numbers)):
+        # arrange numbers to match pack4's order [a,b,c,d,nm] and direction (merge left)
         [numbers[0][col],numbers[1][col],numbers[2][col],numbers[3][col],nmove]=pack4(numbers[0][col],numbers[1][col],numbers[2][col],numbers[3][col])
         tot_move+=nmove
     add_number()
@@ -183,8 +183,10 @@ def move_up(tot_move):
     add_score(tot_move, score)
     game_over()
 
+# Player movement: merge right
 def move_right(tot_move):
     for line in range(len(numbers)):
+        # arrange numbers to match pack4's order [a,b,c,d,nm] and direction (merge left)
         [numbers[line][3],numbers[line][2],numbers[line][1],numbers[line][0],nmove]=pack4(numbers[line][3],numbers[line][2],numbers[line][1],numbers[line][0])
         tot_move+=nmove
     add_number()
@@ -192,8 +194,10 @@ def move_right(tot_move):
     add_score(tot_move, score)
     game_over()
 
+# Player movement: merge left
 def move_left(tot_move):
     for line in range(len(numbers)):
+        # arrange numbers to match pack4's order [a,b,c,d,nm] and direction (merge left)
         [numbers[line][0],numbers[line][1],numbers[line][2],numbers[line][3],nmove]=pack4(numbers[line][0],numbers[line][1],numbers[line][2],numbers[line][3])
         tot_move+=nmove
     add_number()
