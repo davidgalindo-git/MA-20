@@ -149,7 +149,7 @@ def nb_empty_tiles():
 # verify if there are merges available
 def no_merge_possible():
     for row in range(4):
-        for col in range(4):            # Verify if a tile can merge with an adjacent tile
+        for col in range(4):  # Verify if a tile can merge with an adjacent tile
             if col < 3 and numbers[row][col] == numbers[row][col + 1]:  # Verify adjacent tiles to the right
                 return False
             if row < 3 and numbers[row][col] == numbers[row + 1][col]:  # Verify adjacent tiles below
