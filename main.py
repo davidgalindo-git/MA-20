@@ -129,12 +129,12 @@ def add_number():
         return
 
 def check_2048():
-    win_flag = False
+    win_flag = 0
     for line in range(len(numbers)):
         for col in range(len(numbers[line])):
             if numbers[line][col] == 2048:
-                win_flag=True
-    if win_flag:
+                win_flag+=1
+    if win_flag == 1:
         messagebox.showinfo("Winner","You won!")
 
 # finish game when loss conditions are met
