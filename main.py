@@ -17,7 +17,7 @@ from tkinter import messagebox
 import random
 
 # 2 dimensions list with data, new game
-numbers= [[0, 0, 0, 0],
+numbers= [[1024, 1024, 0, 0],
         [0, 0, 0, 0],
         [0, 0, 0, 0],
         [0, 0, 0, 0]]
@@ -265,7 +265,7 @@ def key_pressed(event) :
 new_game_button = Button(win, text="NEW", width=8, height=1, font=("Arial", 20), command=new_game)
 new_game_button = new_game_button.place(x=220, y=10)
 
-new_game()
+
 #add_score(score)
 
 win.bind('<Key>', key_pressed) # keyboard event treatment
