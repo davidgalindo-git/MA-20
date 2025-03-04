@@ -21,6 +21,7 @@ numbers= [[1024, 1024, 0, 0],
         [0, 0, 0, 0],
         [0, 0, 0, 0],
         [0, 0, 0, 0]]
+win_flag=False
 
 # color code
 colors={
@@ -116,12 +117,14 @@ def add_number():
 
 # check if win condition is met : 2048 tile
 def check_2048():
-    win_flag = 0
+    global win_flag
+    winning_case = False
     for line in range(len(numbers)):
         for col in range(len(numbers[line])):
             if numbers[line][col] == 2048:
-                win_flag+=1
-    if win_flag == 1:
+                winning_case=True
+    if winning_case == True and win_flag == False:
+        win_flag = True
         messagebox.showinfo("Winner","You won!")
 
 # finish game when loss conditions are met
