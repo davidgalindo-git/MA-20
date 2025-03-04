@@ -18,7 +18,7 @@ import random
 
 # 2 dimensions list with data, new game
 numbers= [[1024, 1024, 0, 0],
-        [0, 0, 0, 0],
+        [0, 512, 512, 1024],
         [0, 0, 0, 0],
         [0, 0, 0, 0]]
 win_flag=False
