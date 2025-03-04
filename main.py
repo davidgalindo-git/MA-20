@@ -128,6 +128,7 @@ def add_number():
     else:
         return
 
+# check if win condition is met : 2048 tile
 def check_2048():
     win_flag = 0
     for line in range(len(numbers)):
