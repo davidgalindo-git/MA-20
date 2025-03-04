@@ -22,9 +22,6 @@ numbers= [[0, 0, 0, 0],
         [0, 0, 0, 0],
         [0, 0, 0, 0]]
 
-# empty cases list
-empty_positions = []
-
 # color code
 colors={
     0: "#EEEEEE",
@@ -107,20 +104,9 @@ def new_game():
     displayGame(colors, numbers)
     pass
 
-# create list with empty cases' positions.
-def empty_cases():
-    # list of empty positions
-    global empty_positions
-    empty_positions = []
-    for line in range(len(numbers)):
-        for col in range(len(numbers[line])):
-            if numbers[line][col] == 0:
-                empty_positions.append([line,col])
-    return empty_positions
-
 # add 2 or 4 randomly into one empty case
 def add_number():
-    empty_positions = empty_cases()
+    empty_positions = nb_empty_tiles()
     if empty_positions:
         line, col = random.choice(empty_positions)
         numbers[line][col] = random.choices([2, 4], weights=[0.8,0.2])[0]
@@ -141,19 +127,27 @@ def check_2048():
 # finish game when loss conditions are met
 def game_over():
     validator_lose=0
-    empty_positions = empty_cases()
+    empty_positions = nb_empty_tiles()
     if not empty_positions:
-        for line in range(len(numbers)):            # Count numbers if they're different from their closest others
-            for col in range(len(numbers[line])):
-                if numbers[line][col]!= numbers[line+1][col]\
-                and numbers[line][col]!= numbers[line][col+1]\
-                and numbers[line][col]!= numbers[line-1][col]\
-                and numbers[line][col]!= numbers[line][col-1]:
+        for line in range(len(numbers)-1):            # Count numbers if they're different from their closest others
+            for col in range(len(numbers[line])-1):
+                if line < len(numbers[line]) and numbers[line][col]!= numbers[line+1][col]\
+                and col < len(numbers[col]) and numbers[line][col]!= numbers[line][col+1]:
                     validator_lose+=1
-    if validator_lose==15:
+    if validator_lose==9:
         game_over_message = messagebox.askquestion("Game Over", "Do you want to play again?")
         if game_over_message:
             new_game()
+
+# create list of empty tiles
+def nb_empty_tiles():
+    # list of empty positions
+    empty_positions = []
+    for line in range(len(numbers)):
+        for col in range(len(numbers[line])):
+            if numbers[line][col] == 0:
+                empty_positions.append([line, col])
+    return empty_positions
 
 # merges 4 cases and counts the number of movements done
 def pack4(a,b,c,d):
