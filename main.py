@@ -129,15 +129,11 @@ def game_over():
     validator_lose=0
     empty_positions = nb_empty_tiles()
     if not empty_positions:
-        for line in range(len(numbers)-1):            # Count numbers if they're different from their closest others
-            for col in range(len(numbers[line])-1):
-                if line < len(numbers[line]) and numbers[line][col]!= numbers[line+1][col]\
-                and col < len(numbers[col]) and numbers[line][col]!= numbers[line][col+1]:
-                    validator_lose+=1
-    if validator_lose==9:
-        game_over_message = messagebox.askquestion("Game Over", "Do you want to play again?")
-        if game_over_message:
-            new_game()
+        lose_flag=merge_possible()
+        if lose_flag == True:
+            game_over_message = messagebox.askquestion("Game Over", "Do you want to play again?")
+            if game_over_message:
+                new_game()
 
 # create list of empty tiles
 def nb_empty_tiles():
@@ -148,6 +144,14 @@ def nb_empty_tiles():
             if numbers[line][col] == 0:
                 empty_positions.append([line, col])
     return empty_positions
+
+# verify if there's still merges to be done
+def merge_possible():
+    for line in range(len(numbers) - 1):  # Count numbers if they're different from their closest others
+        for col in range(len(numbers[line]) - 1):
+            if line < len(numbers[line]) and numbers[line][col] != numbers[line + 1][col]\
+            and col < len(numbers[col]) and numbers[line][col] != numbers[line][col + 1]:
+                return True
 
 # merges 4 cases and counts the number of movements done
 def pack4(a,b,c,d):
