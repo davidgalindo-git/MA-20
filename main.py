@@ -87,7 +87,7 @@ def displayGame(colors, numbers):
             display_number = "" if number == 0 else number # Turn 0 into empty string
             color = colors.get(number, None)    # Get number color
             labels[line][col].config(bg=color,text =display_number)  # Modify background color and refresh numbers list
-
+    check_2048()
 
 # add current score earned to total score
 def add_score(tot_move,score):
@@ -128,21 +128,31 @@ def add_number():
     else:
         return
 
+def check_2048():
+    win_flag = False
+    for line in range(len(numbers)):
+        for col in range(len(numbers[line])):
+            if numbers[line][col] == 2048:
+                win_flag=True
+    if win_flag:
+        messagebox.showinfo("Winner","You won!")
+
 # finish game when loss conditions are met
 def game_over():
-    non_zero_count=0
-    for line in range(len(numbers)):            # Count numbers if they're different from each other
-        for col in range(len(numbers[line])):
-            if numbers[line][col]!= numbers[line+1][col]\
-            or numbers[line][col]!= numbers[line][col+1]\
-            or numbers[line][col]!= numbers[line-1][col]\
-            or numbers[line][col]!= numbers[line][col-1]:
-                non_zero_count +=1
-    if non_zero_count == 16:
+    validator_lose=0
+    empty_positions = empty_cases()
+    if not empty_positions:
+        for line in range(len(numbers)):            # Count numbers if they're different from their closest others
+            for col in range(len(numbers[line])):
+                if numbers[line][col]!= numbers[line+1][col]\
+                and numbers[line][col]!= numbers[line][col+1]\
+                and numbers[line][col]!= numbers[line-1][col]\
+                and numbers[line][col]!= numbers[line][col-1]:
+                    validator_lose+=1
+    if validator_lose==15:
         game_over_message = messagebox.askquestion("Game Over", "Do you want to play again?")
         if game_over_message:
             new_game()
-    pass
 
 # merges 4 cases and counts the number of movements done
 def pack4(a,b,c,d):
