@@ -96,7 +96,7 @@ def displayGame(colors, numbers):
             labels[line][col].config(bg=color,text =display_number)  # Modify background color and refresh numbers list
     check_2048()
 
-# timer from start to end of a single game
+# start timer from then add a second every second
 def start_timer(seconds=0, minutes=0):
     global timer
     if not lose_flag:
@@ -107,6 +107,7 @@ def start_timer(seconds=0, minutes=0):
             seconds = 0
         timer = win.after(1000, start_timer, seconds, minutes)    # chatgpt replaced my sleep.time() with win.after
 
+# stop current timer and start new timer
 def reset_timer():
     win.after_cancel(timer)
     start_timer()
