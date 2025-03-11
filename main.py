@@ -97,14 +97,19 @@ def displayGame(colors, numbers):
     check_2048()
 
 # timer from start to end of a single game
-def timer(seconds=0, minutes=0):
+def start_timer(seconds=0, minutes=0):
+    global timer
     if not lose_flag:
-        seconds+=1
-        if seconds == 60:
-            minutes+=1
-            seconds=0
         timer_label.config(text=f'{minutes} : {seconds}')
-        win.after(1000, timer, seconds, minutes)    # chatgpt replaced my sleep.time() with win.after
+        seconds += 1
+        if seconds == 60:
+            minutes += 1
+            seconds = 0
+        timer = win.after(1000, start_timer, seconds, minutes)    # chatgpt replaced my sleep.time() with win.after
+
+def reset_timer():
+    win.after_cancel(timer)
+    start_timer()
 
 # add current score earned to total score
 def refresh_score():
@@ -160,6 +165,7 @@ def new_game():
     non_zero_count = sum(1 for row in numbers for num in row if num!=0) # Count non empty cases
     if non_zero_count < 2 or non_zero_count > 3: # Minimum 2 numbers, maximum 3 numbers
         new_game()
+    reset_timer()
     displayGame(colors, numbers)
 
 # create list of empty tiles
@@ -295,7 +301,7 @@ def key_pressed(event) :
 new_game_button = Button(win, text="NEW", width=8, height=1, font=("Arial", 20), command=new_game)
 new_game_button = new_game_button.place(x=220, y=10)
 
-timer()
+start_timer()
 win.bind('<Key>', key_pressed) # keyboard event treatment
 displayGame(colors, numbers)
 win.mainloop()
