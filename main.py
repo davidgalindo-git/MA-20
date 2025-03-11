@@ -74,6 +74,9 @@ Label(win, text="HIGH SCORE\n",font=("Arial", 20), bg='#2B78E4',fg="#FFFFFF",bor
 score_label = Label(win, text=f'SCORE\n{score}', width=10, font=("Arial", 20), bg='#EEEEEE',borderwidth=1,relief="solid")
 score_label.place(x=380, y=80)
 
+# Timer
+timer_label = Label(win, text=f'0 : 0', width=10, font=("Arial", 20), bg='#EEEEEE',borderwidth=1,relief="solid")
+timer_label.place(x=380, y=10)
 
 # labels creation and position
 for line in range(len(numbers)):
@@ -94,21 +97,18 @@ def displayGame(colors, numbers):
     check_2048()
 
 # timer from start to end of a single game
-def timer():
-    seconds=0
-    minutes=0
-    while not lose_flag:
-        time.sleep(1)
+def timer(seconds=0, minutes=0):
+    if not lose_flag:
         seconds+=1
         if seconds == 60:
             minutes+=1
             seconds=0
-        return f'{minutes}:{seconds}'
+        timer_label.config(text=f'{minutes} : {seconds}')
+        win.after(1000, timer, seconds, minutes)    # chatgpt replaced my sleep.time() with win.after
 
 # add current score earned to total score
-def add_score(tot_move):
+def refresh_score():
     global score
-    score+=tot_move
     score_label.config(text=score)
 
 # add 2 or 4 randomly into one empty case
@@ -184,6 +184,7 @@ def no_merge_possible():
 
 # merges 4 cases and counts the number of movements done
 def pack4(a,b,c,d):
+    global score
     nm=0
     if c==0 and d!=0:
         a,b,c,d=a,b,d,0
@@ -196,17 +197,20 @@ def pack4(a,b,c,d):
         nm+=1
     if a==b and a>0:
         a = 2*a
+        score+=a
         b=c
         c=d
         d=0
         nm+=1
     if b==c and b>0:
         b=2*b
+        score+=b
         c=d
         d=0
         nm+=1
     if c==d and c>0:
         c=2*c
+        score+=c
         d=0
         nm+=1
     return[a,b,c,d,nm]
@@ -222,7 +226,7 @@ def move_down():
     # add random number if there are 1 or more moves after event
     if tot_move>0:
         add_number()
-    add_score(tot_move)
+    refresh_score()
     displayGame(colors, numbers)
     game_over()
 
@@ -237,7 +241,7 @@ def move_up():
     # add random number if there are 1 or more moves after event
     if tot_move > 0:
         add_number()
-    add_score(tot_move)
+    refresh_score()
     displayGame(colors, numbers)
     game_over()
 
@@ -252,7 +256,7 @@ def move_right():
     # add random number if there are 1 or more moves after event
     if tot_move > 0:
         add_number()
-    add_score(tot_move)
+    refresh_score()
     displayGame(colors, numbers)
     game_over()
 
@@ -267,7 +271,7 @@ def move_left():
     # add random number if there are 1 or more moves after event
     if tot_move > 0:
         add_number()
-    add_score(tot_move)
+    refresh_score()
     displayGame(colors, numbers)
     game_over()
 
@@ -291,10 +295,7 @@ def key_pressed(event) :
 new_game_button = Button(win, text="NEW", width=8, height=1, font=("Arial", 20), command=new_game)
 new_game_button = new_game_button.place(x=220, y=10)
 
-# Timer
-timer_label = Label(win, text=f'{timer()}', width=10, font=("Arial", 20), bg='#EEEEEE',borderwidth=1,relief="solid")
-timer_label.place(x=400, y=10)
-
+timer()
 win.bind('<Key>', key_pressed) # keyboard event treatment
 displayGame(colors, numbers)
 win.mainloop()
