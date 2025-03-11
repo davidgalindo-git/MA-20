@@ -95,10 +95,15 @@ def displayGame(colors, numbers):
 
 # timer from start to end of a single game
 def timer():
-    elapsed_time=0
-    while lose_flag == False:
-        elapsed_time+=1
+    seconds=0
+    minutes=0
+    while not lose_flag:
         time.sleep(1)
+        seconds+=1
+        if seconds == 60:
+            minutes+=1
+            seconds=0
+        return f'{minutes}:{seconds}'
 
 # add current score earned to total score
 def add_score(tot_move):
