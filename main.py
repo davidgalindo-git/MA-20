@@ -94,6 +94,11 @@ def displayGame(colors, numbers):
     check_2048()
 
 # timer from start to end of a single game
+def timer():
+    elapsed_time=0
+    while lose_flag == False:
+        elapsed_time+=1
+        time.sleep(1)
 
 # add current score earned to total score
 def add_score(tot_move):
