@@ -154,8 +154,10 @@ def game_over():
 # restart game to an initial situation
 def new_game():
     global win_flag
+    global lose_flag
     global score
     win_flag = False
+    lose_flag = False
     score = 0
     score_label.config(text=score)
     for line in range(len(numbers)):
