@@ -197,6 +197,11 @@ def save_game():
     f.write(f'{numbers}')
     f.close()
 
+def import_game():
+    my_game = input("Enter file name:")
+    f = open(f'{my_game}','r')
+    numbers = f.readlines()
+
 # create list of empty tiles
 def nb_empty_tiles():
     # list of empty positions
