@@ -10,14 +10,12 @@ Date : 21.01.2025
 Version : 0.0.1
 Purpose : Afficher le tableau mémoire de la maquette personnalisée du jeu "2048".
 """
-from operator import length_hint
 from tkinter import *
 import tkinter.font
 from tkinter import messagebox
 import random
 import time
 
-from Exos.triangles_rect_entiers import elapsed_time
 
 # 2 dimensions list with data, new game
 numbers= [[1024, 1024, 0, 0],
@@ -96,11 +94,6 @@ def displayGame(colors, numbers):
     check_2048()
 
 # timer from start to end of a single game
-def timer():
-    start_time = time.time()
-    while lose_flag == False:
-        elapsed_time = time.time() - start_time
-        return elapsed_time
 
 # add current score earned to total score
 def add_score(tot_move):
@@ -287,6 +280,10 @@ def key_pressed(event) :
 # "NEW" button
 new_game_button = Button(win, text="NEW", width=8, height=1, font=("Arial", 20), command=new_game)
 new_game_button = new_game_button.place(x=220, y=10)
+
+# Timer
+timer_label = Label(win, text=f'{timer()}', width=10, font=("Arial", 20), bg='#EEEEEE',borderwidth=1,relief="solid")
+timer_label.place(x=400, y=10)
 
 win.bind('<Key>', key_pressed) # keyboard event treatment
 displayGame(colors, numbers)
