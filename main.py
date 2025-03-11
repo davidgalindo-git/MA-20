@@ -129,12 +129,14 @@ def check_2048():
 
 # finish game when loss conditions are met
 def game_over():
+    global win_flag
     empty_positions = nb_empty_tiles()
     if not empty_positions:
         lose_flag = no_merge_possible()
-        if lose_flag == True:
+        if lose_flag:
             game_over_message = messagebox.askquestion("Game Over", "Do you want to play again?")
             if game_over_message == 'yes':
+                win_flag = False
                 new_game()
             else:
                 quit()
