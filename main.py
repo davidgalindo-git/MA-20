@@ -10,12 +10,13 @@ Date : 21.01.2025
 Version : 0.0.1
 Purpose : Afficher le tableau mémoire de la maquette personnalisée du jeu "2048".
 """
+from datetime import datetime
 from tkinter import *
 import tkinter.font
 from tkinter import messagebox
 import random
 import time
-
+import os
 
 # 2 dimensions list with data, new game
 numbers= [[1024, 1024, 0, 0],
@@ -68,7 +69,8 @@ win.configure(bg='#EE99FF')
 Label(win, text="2048", font=("Arial", 45),bg='#EE99FF',fg="#FFFFFF").place(x=220, y=80)
 
 # High Score
-Label(win, text="HIGH SCORE\n",font=("Arial", 20), bg='#2B78E4',fg="#FFFFFF",borderwidth=1,relief="solid").place(x=25, y=80)
+high_score_label = Label(win, text=f'HIGH SCORE\n',font=("Arial", 20), bg='#2B78E4',fg="#FFFFFF",borderwidth=1,relief="solid")
+high_score_label.place(x=25, y=80)
 
 # Score
 score_label = Label(win, text=f'SCORE\n{score}', width=10, font=("Arial", 20), bg='#EEEEEE',borderwidth=1,relief="solid")
@@ -95,6 +97,7 @@ def displayGame(colors, numbers):
             color = colors.get(number, None)    # Get number color
             labels[line][col].config(bg=color,text =display_number)  # Modify background color and refresh numbers list
     check_2048()
+    high_score_label.config(text=f'HIGH SCORE\n{get_high_score()}')
 
 # start timer from then add a second every second
 def start_timer(seconds=0, minutes=0):
@@ -109,13 +112,13 @@ def start_timer(seconds=0, minutes=0):
 
 # stop current timer and start new timer
 def reset_timer():
-    win.after_cancel(timer)
+    win.after_cancel(timer) # chatgpt gave me the after_cancel(timer) function
     start_timer()
 
 # add current score earned to total score
 def refresh_score():
     global score
-    score_label.config(text=score)
+    score_label.config(text=f'SCORE\n{score}')
 
 # add 2 or 4 randomly into one empty case
 def add_number():
@@ -157,6 +160,7 @@ def new_game():
     global win_flag
     global lose_flag
     global score
+    save_score()
     win_flag = False
     lose_flag = False
     score = 0
@@ -170,6 +174,22 @@ def new_game():
         new_game()
     reset_timer()
     displayGame(colors, numbers)
+
+def save_score():
+    global score
+    high_score = int(get_high_score())
+    score_datetime = str(datetime.now())
+    #score_time = f'{minutes} : {seconds}'
+    f = open("score_history.txt", "a")
+    f.write(f'{score_datetime} : {score}\n')
+    if score > high_score:
+        f = open("high_score.txt","w")
+        f.write(f'{score}')
+        f.close()
+
+def get_high_score():
+    f = open("high_score.txt","r")
+    return f.read()
 
 # create list of empty tiles
 def nb_empty_tiles():
