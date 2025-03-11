@@ -61,7 +61,7 @@ height=130 # vertical distance between labels
 
 # Windows creation
 win = Tk()
-win.geometry("600x750")
+win.geometry("600x780")
 win.title('2048')
 win.configure(bg='#EE99FF')
 
@@ -192,8 +192,10 @@ def get_high_score():
     return f.read()
 
 def save_game():
-    game_datetime = str(datetime.now())
-    f = open(f'2048_game_{game_datetime}.txt',"w")
+    game_datetime = str(datetime.now().strftime("%d.%m.%Y-%H.%M.%S"))
+    game_datetime.strip(" ")
+    file_path = os.path.join("games", f'2048_game_{game_datetime}.txt')
+    f = open(file_path,"w")
     f.write(f'{numbers}')
     f.close()
 
@@ -334,6 +336,10 @@ def key_pressed(event) :
 # "NEW" button
 new_game_button = Button(win, text="NEW", width=8, height=1, font=("Arial", 20), command=new_game)
 new_game_button = new_game_button.place(x=220, y=10)
+
+# "SAVE GAME" button
+save_game_button = Button(win, text="SAVE GAME", width=10, height=1, font=("Arial", 20), command=save_game)
+save_game_button.place(x=200, y=720)
 
 start_timer()
 win.bind('<Key>', key_pressed) # keyboard event treatment
