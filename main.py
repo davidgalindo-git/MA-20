@@ -21,6 +21,7 @@ numbers= [[1024, 1024, 0, 0],
         [0, 512, 512, 1024],
         [0, 0, 0, 0],
         [0, 0, 0, 0]]
+
 win_flag=False
 
 # color code
@@ -88,10 +89,10 @@ def displayGame(colors, numbers):
     check_2048()
 
 # add current score earned to total score
-def add_score(tot_move,score):
+def add_score(tot_move):
+    global score
     score+=tot_move
     score_label.config(text=score)
-    pass
 
 # restart game to an initial situation
 def new_game():
@@ -103,7 +104,7 @@ def new_game():
     if non_zero_count < 2 or non_zero_count > 3: # Minimum 2 numbers, maximum 3 numbers
         new_game()
     displayGame(colors, numbers)
-    pass
+
 
 # add 2 or 4 randomly into one empty case
 def add_number():
@@ -130,6 +131,7 @@ def check_2048():
 # finish game when loss conditions are met
 def game_over():
     global win_flag
+    global score
     empty_positions = nb_empty_tiles()
     if not empty_positions:
         lose_flag = no_merge_possible()
@@ -137,6 +139,7 @@ def game_over():
             game_over_message = messagebox.askquestion("Game Over", "Do you want to play again?")
             if game_over_message == 'yes':
                 win_flag = False
+                score = 0
                 new_game()
             else:
                 quit()
@@ -201,8 +204,8 @@ def move_down():
     # add random number if there are 1 or more moves after event
     if tot_move>0:
         add_number()
+    add_score(tot_move)
     displayGame(colors, numbers)
-    add_score(tot_move,score)
     game_over()
 
 # Player movement: merge up
@@ -216,8 +219,8 @@ def move_up():
     # add random number if there are 1 or more moves after event
     if tot_move > 0:
         add_number()
+    add_score(tot_move)
     displayGame(colors, numbers)
-    add_score(tot_move, score)
     game_over()
 
 # Player movement: merge right
@@ -231,8 +234,8 @@ def move_right():
     # add random number if there are 1 or more moves after event
     if tot_move > 0:
         add_number()
+    add_score(tot_move)
     displayGame(colors, numbers)
-    add_score(tot_move, score)
     game_over()
 
 # Player movement: merge left
@@ -246,8 +249,8 @@ def move_left():
     # add random number if there are 1 or more moves after event
     if tot_move > 0:
         add_number()
+    add_score(tot_move)
     displayGame(colors, numbers)
-    add_score(tot_move, score)
     game_over()
 
 # Player event: key pressed
@@ -269,9 +272,6 @@ def key_pressed(event) :
 # "NEW" button
 new_game_button = Button(win, text="NEW", width=8, height=1, font=("Arial", 20), command=new_game)
 new_game_button = new_game_button.place(x=220, y=10)
-
-
-#add_score(score)
 
 win.bind('<Key>', key_pressed) # keyboard event treatment
 displayGame(colors, numbers)
