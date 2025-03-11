@@ -94,18 +94,6 @@ def add_score(tot_move):
     score+=tot_move
     score_label.config(text=score)
 
-# restart game to an initial situation
-def new_game():
-    for line in range(len(numbers)):
-        for col in range(len(numbers[line])):
-            numbers[line][col]=random.choices([0, 2, 4], weights=[0.8625,0.125,0.0125])[0] # Set random numbers between 0, 2 and 4
-
-    non_zero_count = sum(1 for row in numbers for num in row if num!=0) # Count non empty cases
-    if non_zero_count < 2 or non_zero_count > 3: # Minimum 2 numbers, maximum 3 numbers
-        new_game()
-    displayGame(colors, numbers)
-
-
 # add 2 or 4 randomly into one empty case
 def add_number():
     empty_positions = nb_empty_tiles()
@@ -130,20 +118,32 @@ def check_2048():
 
 # finish game when loss conditions are met
 def game_over():
-    global win_flag
-    global score
+
     empty_positions = nb_empty_tiles()
     if not empty_positions:
         lose_flag = no_merge_possible()
         if lose_flag:
             game_over_message = messagebox.askquestion("Game Over", "Do you want to play again?")
             if game_over_message == 'yes':
-                win_flag = False
-                score = 0
-                score_label.config(text=score)
                 new_game()
             else:
                 quit()
+
+# restart game to an initial situation
+def new_game():
+    global win_flag
+    global score
+    win_flag = False
+    score = 0
+    score_label.config(text=score)
+    for line in range(len(numbers)):
+        for col in range(len(numbers[line])):
+            numbers[line][col]=random.choices([0, 2, 4], weights=[0.8625,0.125,0.0125])[0] # Set random numbers between 0, 2 and 4
+
+    non_zero_count = sum(1 for row in numbers for num in row if num!=0) # Count non empty cases
+    if non_zero_count < 2 or non_zero_count > 3: # Minimum 2 numbers, maximum 3 numbers
+        new_game()
+    displayGame(colors, numbers)
 
 # create list of empty tiles
 def nb_empty_tiles():
