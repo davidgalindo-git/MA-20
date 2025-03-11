@@ -134,7 +134,7 @@ def game_over():
         lose_flag = no_merge_possible()
         if lose_flag == True:
             game_over_message = messagebox.askquestion("Game Over", "Do you want to play again?")
-            if game_over_message == True:
+            if game_over_message == 'yes':
                 new_game()
             else:
                 quit()
