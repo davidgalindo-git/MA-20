@@ -15,14 +15,15 @@ from tkinter import *
 import tkinter.font
 from tkinter import messagebox
 import random
+import time
+
+from Exos.triangles_rect_entiers import elapsed_time
 
 # 2 dimensions list with data, new game
 numbers= [[1024, 1024, 0, 0],
         [0, 512, 512, 1024],
         [0, 0, 0, 0],
         [0, 0, 0, 0]]
-
-win_flag=False
 
 # color code
 colors={
@@ -47,6 +48,12 @@ labels=[[None,None,None,None],[None,None,None,None],[None,None,None,None],[None,
 
 # Score
 score = 0
+
+# Win verifier
+win_flag=False
+
+# Lose verifier
+lose_flag=False
 
 x0=25 # horizontal beginning of labels
 y0=190 # vertical beginning of labels
@@ -118,7 +125,7 @@ def check_2048():
 
 # finish game when loss conditions are met
 def game_over():
-
+    global lose_flag
     empty_positions = nb_empty_tiles()
     if not empty_positions:
         lose_flag = no_merge_possible()
