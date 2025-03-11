@@ -95,6 +95,13 @@ def displayGame(colors, numbers):
             labels[line][col].config(bg=color,text =display_number)  # Modify background color and refresh numbers list
     check_2048()
 
+# timer from start to end of a single game
+def timer():
+    start_time = time.time()
+    while lose_flag == False:
+        elapsed_time = time.time() - start_time
+        return elapsed_time
+
 # add current score earned to total score
 def add_score(tot_move):
     global score
