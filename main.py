@@ -191,6 +191,12 @@ def get_high_score():
     f = open("high_score.txt","r")
     return f.read()
 
+def save_game():
+    game_datetime = str(datetime.now())
+    f = open(f'2048_game_{game_datetime}.txt',"w")
+    f.write(f'{numbers}')
+    f.close()
+
 # create list of empty tiles
 def nb_empty_tiles():
     # list of empty positions
