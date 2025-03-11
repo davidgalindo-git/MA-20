@@ -140,6 +140,7 @@ def game_over():
             if game_over_message == 'yes':
                 win_flag = False
                 score = 0
+                score_label.config(text=score)
                 new_game()
             else:
                 quit()
