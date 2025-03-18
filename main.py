@@ -13,10 +13,10 @@ Purpose : Afficher le tableau mémoire de la maquette personnalisée du jeu "204
 from datetime import datetime
 from tkinter import *
 import tkinter.font
-from tkinter import messagebox
+from tkinter import messagebox, filedialog
 import random
-import time
 import os
+import ast
 
 # 2 dimensions list with data, new game
 numbers= [[1024, 1024, 0, 0],
@@ -200,9 +200,20 @@ def save_game():
     f.close()
 
 def load_game():
-    my_game = input("Enter file name:")
-    f = open(f'{my_game}','r')
-    numbers = f.readlines()
+    """Open a file explorer to choose a game file from the .\games directory."""
+    root = Tk()
+    root.withdraw()  # Hide the main window
+    root.attributes('-topmost', True)  # Bring the dialog to the front
+    game_dir = os.path.join(os.getcwd(), "games")  # Define the games directory
+    file_path = filedialog.askopenfilename(initialdir=game_dir, title="Select a Game File",
+                                           filetypes=[("Text Files", "*.txt"), ("All Files", "*.*")])
+    if file_path:
+        with open(file_path, "r") as f:
+            global numbers
+            numbers = ast.literal_eval(f.read())  # Convert string to list safely
+            displayGame(colors, numbers)  # Update the game board
+    reset_timer()
+    return file_path if file_path else None  # Return the chosen file path or None if canceled
 
 # create list of empty tiles
 def nb_empty_tiles():
