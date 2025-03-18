@@ -6,9 +6,11 @@
 """
 Nom : main.py
 Auteur : David Galindo
-Date : 21.01.2025
-Version : 0.0.1
-Purpose : Afficher le tableau mémoire de la maquette personnalisée du jeu "2048".
+Date : 18.03.2025
+Version : 0.0.7
+Purpose : Implémentation des fonctionnalités complémentaires
+Fonctionnalités complémentaires: Nouveau jeu, afficher le score,
+afficher un timer, meilleur score, enregistrement et chargement des parties.
 """
 from datetime import datetime
 from tkinter import *
