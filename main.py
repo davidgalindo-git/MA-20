@@ -180,6 +180,7 @@ def new_game():
     reset_timer()
     displayGame(colors, numbers)
 
+# Save score to local history file
 def save_score():
     global score
     high_score = int(get_high_score())
@@ -200,11 +201,12 @@ def get_high_score():
     f = open("high_score.txt","r")
     return f.read()
 
+# Save game (numbers, score and time) to local directory "games" as a JSON file
 def save_game(): # avec chatgpt
     game_datetime = datetime.now().strftime("%d.%m.%Y-%H.%M.%S") # Time str format
     file_path = os.path.join("games", f'2048_game_{game_datetime}.json')  # Use JSON format
-    time_str = timer_label.cget("text")  # "minutes : seconds"
-    minutes, seconds = map(int, time_str.split(" : "))
+    time_str = timer_label.cget("text")  # Gets text from timer label, "minutes : seconds", as str
+    minutes, seconds = map(int, time_str.split(" : ")) # Separates minutes from seconds with their corresponding values
 
     # Write data with JSON format
     game_data = {
@@ -217,6 +219,7 @@ def save_game(): # avec chatgpt
     with open(file_path, "w") as f:
         json.dump(game_data, f)  # Adds python dictionary converted as JSON
 
+# Load game (numbers, score and time) from local "games" directory
 def load_game(): # avec chatgpt
     """Open a file explorer to choose a game file from the .\games directory."""
     root = Tk()
