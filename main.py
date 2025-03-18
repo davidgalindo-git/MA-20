@@ -9,8 +9,8 @@ Auteur : David Galindo
 Date : 18.03.2025
 Version : 0.0.7
 Purpose : Implémentation des fonctionnalités complémentaires
-Fonctionnalités complémentaires: Nouveau jeu, afficher le score,
-afficher un timer, meilleur score, enregistrement et chargement des parties.
+Fonctionnalités complémentaires: Enregistrement et chargement des parties,
+meilleur score, afficher un timer, afficher le score et nouveau jeu.
 """
 from datetime import datetime
 from tkinter import *
