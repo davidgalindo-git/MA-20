@@ -110,9 +110,13 @@ def start_timer(seconds=0, minutes=0):
             seconds = 0
         timer = win.after(1000, start_timer, seconds, minutes)    # chatgpt replaced my sleep.time() with win.after
 
+#stop current timer
+def stop_timer():
+    win.after_cancel(timer) # chatgpt gave me the after_cancel(timer) function
+
 # stop current timer and start new timer
 def reset_timer():
-    win.after_cancel(timer) # chatgpt gave me the after_cancel(timer) function
+    stop_timer()
     start_timer()
 
 # add current score earned to total score
