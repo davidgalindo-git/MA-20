@@ -61,7 +61,7 @@ height=130 # vertical distance between labels
 
 # Windows creation
 win = Tk()
-win.geometry("600x780")
+win.geometry("600x830")
 win.title('2048')
 win.configure(bg='#EE99FF')
 
@@ -199,7 +199,7 @@ def save_game():
     f.write(f'{numbers}')
     f.close()
 
-def import_game():
+def load_game():
     my_game = input("Enter file name:")
     f = open(f'{my_game}','r')
     numbers = f.readlines()
@@ -339,7 +339,11 @@ new_game_button = new_game_button.place(x=220, y=10)
 
 # "SAVE GAME" button
 save_game_button = Button(win, text="SAVE GAME", width=10, height=1, font=("Arial", 20), command=save_game)
-save_game_button.place(x=200, y=720)
+save_game_button.place(x=100, y=750)
+
+# "LOAD GAME" button
+load_game_button = Button(win, text="LOAD GAME", width=10, height=1, font=("Arial", 20), command=load_game )
+load_game_button.place(x=300, y=750)
 
 start_timer()
 win.bind('<Key>', key_pressed) # keyboard event treatment
