@@ -183,12 +183,14 @@ def new_game():
 def save_score():
     global score
     high_score = int(get_high_score())
-    score_datetime = datetime.now().strftime("%d:%m:%Y-%H:%M:%S")
-    time_str = timer_label.cget("text")  # "minutes : seconds"
-    minutes, seconds = map(int, time_str.split(" : "))
+    score_datetime = datetime.now().strftime("%d:%m:%Y-%H:%M:%S") # Time str format
+    time_str = timer_label.cget("text")  # Gets text from timer label, "minutes : seconds", as str
+    minutes, seconds = map(int, time_str.split(" : ")) # Separates minutes from seconds with their corresponding values
     score_time = f'{minutes}:{seconds}'
+
+    # Append date, score and score time in score history file
     f = open("score_history.txt", "a")
-    f.write(f'{score_datetime} : {score} : {score_time}\n')
+    f.write(f'DATE : {score_datetime} / SCORE : {score} / TIME : {score_time}\n')
     if score > high_score:
         f = open("high_score.txt","w")
         f.write(f'{score}')
@@ -199,12 +201,12 @@ def get_high_score():
     return f.read()
 
 def save_game(): # avec chatgpt
-    game_datetime = datetime.now().strftime("%d.%m.%Y-%H.%M.%S")
+    game_datetime = datetime.now().strftime("%d.%m.%Y-%H.%M.%S") # Time str format
     file_path = os.path.join("games", f'2048_game_{game_datetime}.json')  # Use JSON format
-
     time_str = timer_label.cget("text")  # "minutes : seconds"
     minutes, seconds = map(int, time_str.split(" : "))
-    # write data with JSON format
+
+    # Write data with JSON format
     game_data = {
         "numbers": numbers,
         "score": score,
@@ -213,7 +215,7 @@ def save_game(): # avec chatgpt
     }
 
     with open(file_path, "w") as f:
-        json.dump(game_data, f)  # Save as JSON
+        json.dump(game_data, f)  # Adds python dictionary converted as JSON
 
 def load_game(): # avec chatgpt
     """Open a file explorer to choose a game file from the .\games directory."""
