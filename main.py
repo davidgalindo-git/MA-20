@@ -16,7 +16,7 @@ import tkinter.font
 from tkinter import messagebox, filedialog
 import random
 import os
-import ast
+import json
 
 # 2 dimensions list with data, new game
 numbers= [[1024, 1024, 0, 0],
@@ -195,28 +195,48 @@ def get_high_score():
     f = open("high_score.txt","r")
     return f.read()
 
-def save_game():
-    game_datetime = str(datetime.now().strftime("%d.%m.%Y-%H.%M.%S"))
-    game_datetime.strip(" ")
-    file_path = os.path.join("games", f'2048_game_{game_datetime}.txt')
-    f = open(file_path,"w")
-    f.write(f'{numbers}')
-    f.close()
+def save_game(): # avec chatgpt
+    game_datetime = datetime.now().strftime("%d.%m.%Y-%H.%M.%S")
+    file_path = os.path.join("games", f'2048_game_{game_datetime}.json')  # Use JSON format
 
-def load_game():
+    time_str = timer_label.cget("text")  # "minutes : seconds"
+    minutes, seconds = map(int, time_str.split(" : "))
+    # write data with JSON format
+    game_data = {
+        "numbers": numbers,
+        "score": score,
+        "minutes": minutes,
+        "seconds": seconds
+    }
+
+    with open(file_path, "w") as f:
+        json.dump(game_data, f)  # Save as JSON
+
+def load_game(): # avec chatgpt
     """Open a file explorer to choose a game file from the .\games directory."""
     root = Tk()
     root.withdraw()  # Hide the main window
     root.attributes('-topmost', True)  # Bring the dialog to the front
     game_dir = os.path.join(os.getcwd(), "games")  # Define the games directory
     file_path = filedialog.askopenfilename(initialdir=game_dir, title="Select a Game File",
-                                           filetypes=[("Text Files", "*.txt"), ("All Files", "*.*")])
+                                           filetypes=[("JSON Files", "*.json"), ("All Files", "*.*")])
+    # Get JSON data
     if file_path:
         with open(file_path, "r") as f:
-            global numbers
-            numbers = ast.literal_eval(f.read())  # Convert string to list safely
-            displayGame(colors, numbers)  # Update the game board
-    reset_timer()
+            game_data = json.load(f)
+
+        global numbers, score
+        numbers = game_data["numbers"]
+        score = game_data["score"]
+        minutes = game_data["minutes"]
+        seconds = game_data["seconds"]
+
+        # Update UI elements
+        displayGame(colors, numbers)
+        refresh_score()
+        stop_timer()
+        start_timer(seconds=seconds, minutes=minutes)  # Restart timer at saved time
+
     return file_path if file_path else None  # Return the chosen file path or None if canceled
 
 # create list of empty tiles
