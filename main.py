@@ -199,7 +199,11 @@ def save_score():
 
 def get_high_score():
     f = open("high_score.txt","r")
-    return f.read()
+    old_high_score = int(f.read())
+    if old_high_score > score:
+        return old_high_score
+    else:
+        return score
 
 # Save game (numbers, score and time) to local directory "games" as a JSON file
 def save_game(): # avec chatgpt
