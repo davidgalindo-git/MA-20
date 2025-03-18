@@ -184,9 +184,9 @@ def new_game():
 def save_score():
     global score
     high_score = int(get_high_score())
-    score_datetime = datetime.now().strftime("%d:%m:%Y-%H:%M:%S") # Time str format
-    time_str = timer_label.cget("text")  # Gets text from timer label, "minutes : seconds", as str
-    minutes, seconds = map(int, time_str.split(" : ")) # Separates minutes from seconds with their corresponding values
+    score_datetime = datetime.now().strftime("%d:%m:%Y-%H:%M:%S") # chatgpt: Time str format
+    time_str = timer_label.cget("text")  # chatgpt: Gets text from timer label, "minutes : seconds", as str
+    minutes, seconds = map(int, time_str.split(" : ")) # chatgpt: Separates minutes from seconds with their corresponding values
     score_time = f'{minutes}:{seconds}'
 
     # Append date, score and score time in score history file
