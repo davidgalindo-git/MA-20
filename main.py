@@ -157,6 +157,7 @@ def game_over():
             if game_over_message == 'yes':
                 new_game()
             else:
+                save_score()
                 quit()
 
 # restart game to an initial situation
@@ -182,10 +183,12 @@ def new_game():
 def save_score():
     global score
     high_score = int(get_high_score())
-    score_datetime = str(datetime.now())
-    #score_time = f'{minutes} : {seconds}'
+    score_datetime = datetime.now().strftime("%d:%m:%Y-%H:%M:%S")
+    time_str = timer_label.cget("text")  # "minutes : seconds"
+    minutes, seconds = map(int, time_str.split(" : "))
+    score_time = f'{minutes}:{seconds}'
     f = open("score_history.txt", "a")
-    f.write(f'{score_datetime} : {score}\n')
+    f.write(f'{score_datetime} : {score} : {score_time}\n')
     if score > high_score:
         f = open("high_score.txt","w")
         f.write(f'{score}')
