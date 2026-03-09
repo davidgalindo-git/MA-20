@@ -1,0 +1,21 @@
+# Nom du workflow (apparaîtra dans l'onglet Actions de GitHub)
+name: Premier Workflow
+# Déclencheur : quand exécuter ce workflow ?
+# [push] signifie "à chaque push sur n'importe quelle branche"
+on: [push]
+# Un workflow contient un ou plusieurs "jobs" (tâches)
+jobs:
+# Nom de notre job (vous pouvez le choisir librement)
+ dire-bonjour:
+# Sur quel système d'exploitation exécuter ce job ?
+  runs-on: ubuntu-latest
+
+# Liste des étapes à exécuter dans ce job
+  steps:
+# Première étape : afficher un message
+    - name: Etape 1
+      run: echo "Bonjour classe ICT324 !"
+
+   # Deuxième étape : afficher un autre message
+    - name: Etape 2
+      run: echo "Ceci est mon premier workflow automatisé."

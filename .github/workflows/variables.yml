@@ -1,0 +1,11 @@
+name: variables.yml
+on: push
+
+jobs:
+  mon-job:
+    runs-on: ubuntu-latest
+    env:
+      PRENOM: "David"
+    steps:
+      - name: Salutation personnalisée
+        run: echo "Bonjour $PRENOM, bienvenue dans le module ICT324"

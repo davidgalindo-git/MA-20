@@ -194,10 +194,12 @@ def save_score():
     # Append date, score and score time in score history file
     f = open("score_history.txt", "a")
     f.write(f'DATE : {score_datetime} / SCORE : {score} / TIME : {score_time}\n')
-    if score > high_score:
-        f = open("high_score.txt","w")
-        f.write(f'{score}')
-        f.close()
+    f.close()
+
+    # Write high score
+    f = open("high_score.txt","w")
+    f.write(f'{high_score}')
+    f.close()
 
 def get_high_score():
     f = open("high_score.txt","r")

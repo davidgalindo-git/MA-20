@@ -1,0 +1,15 @@
+name: Lecture de fichier
+on: push
+
+jobs:
+  verification:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Récupération du code
+        uses: actions/checkout@v4
+
+      - name: Afficher le contenu du dossier
+        run: ls -la
+
+      - name: Lire le message
+        run: cat message.txt
